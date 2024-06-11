@@ -64,6 +64,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Tile System Component")
 		FOnTileSystemUpdated OnTileSystemUpdated;
 
+	UFUNCTION(BlueprintCallable, Category = "Tile System Component", CallInEditor)
+	void RefreshAllTiles();
+
 protected:
 	UPROPERTY(Transient)
 		TArray<FIntVector> DirtyTiles;

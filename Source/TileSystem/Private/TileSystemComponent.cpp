@@ -73,6 +73,19 @@ void UTileSystemComponent::UpdateDirtyTiles()
 	}
 }
 
+void UTileSystemComponent::RefreshAllTiles()
+{
+	for (TPair<FIntVector, uint8> Tile : Tiles)
+	{
+		DestroyAllTileActorsAtCoordinate(Tile.Key);
+	}
+
+	for (TPair<FIntVector, uint8> Tile : Tiles)
+	{
+		RefreshTile(Tile.Key);
+	}
+}
+
 void UTileSystemComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -153,7 +166,8 @@ bool UTileSystemComponent::RefreshTileActors(const FIntVector& Coordinate, const
 			if ((*Tile)->MatchesAdjacencyArray(AdjacencyArrayBits))
 			{
 				(*Tile)->AdjacencyBits = AdjacencyArrayBits;
-				(*Tile)->RerunConstructionScripts();
+				//(*Tile)->RerunConstructionScripts();
+				(*Tile)->OnAdjacencyBitsSet(AdjacencyArrayBits);
 				return true;
 			}
 			else
@@ -183,6 +197,8 @@ bool UTileSystemComponent::RefreshTileActors(const FIntVector& Coordinate, const
 
 			UGameplayStatics::FinishSpawningActor(NewTile, SpawnTransform);
 			NewTile->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+			NewTile->OriginalTransform = NewTile->GetActorTransform();
+			NewTile->OnAdjacencyBitsSet(AdjacencyArrayBits);
 
 			TileActor.TileActors.Add(Coordinate, NewTile);
 			return true;

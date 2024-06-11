@@ -164,7 +164,7 @@ void UTileDebugDrawComponent::SetTileSystem(UTileSystemComponent* NewTileSystem)
 	TileSystemOwner = NewTileSystem ? NewTileSystem->GetTypedOuter<AActor>() : nullptr;
 	if (NewTileSystem)
 	{
-		NewTileSystem->OnTileSystemUpdated.AddDynamic(this, &UTileDebugDrawComponent::OnTileSystemUpdated);
+		NewTileSystem->OnTileSystemUpdated.AddUniqueDynamic(this, &UTileDebugDrawComponent::OnTileSystemUpdated);
 	}
 	MarkRenderStateDirty();
 }

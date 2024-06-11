@@ -18,6 +18,10 @@ struct FTileAdjacencyMatch
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Tile Adjacency Match")
 	bool bMatchOnCardinalOnly;
 
+	// Offset to apply to this tile for this match
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Tile Adjacency Match")
+	FTransform Transform;
+
 	bool MatchesAdjacencyArray(uint8 AdjacencyValue) const;
 };
 
@@ -48,4 +52,12 @@ public:
 	// The matched adjacency bits of THIS tile. Use for debug purposes.
 	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Category = "Tile", meta=(AdvancedDisplay))
 		uint8 AdjacencyBits;
+
+	// The transform of this tile before it had an offset added
+	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Category = "Tile", meta = (AdvancedDisplay))
+		FTransform OriginalTransform;
+
+	// Called after spawning this tile with the matching adjacency bits. Sets the relative transform
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, CallInEditor, Category = "Tile", meta = (CallInEditor = true))
+	void OnAdjacencyBitsSet(uint8 InAdjacencyBits);
 };

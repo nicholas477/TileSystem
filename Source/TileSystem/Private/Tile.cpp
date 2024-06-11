@@ -34,6 +34,19 @@ uint8 ATile::RemoveCardinalBits(uint8 Value) const
     return Value & ~FTileSystemFunctionLibrary::GetCardinalBits();
 }
 
+void ATile::OnAdjacencyBitsSet_Implementation(uint8 InAdjacencyBits)
+{
+    for (const FTileAdjacencyMatch& AdjacencyMatch : AdjacencyMatches)
+    {
+        if (AdjacencyMatch.MatchesAdjacencyArray(InAdjacencyBits))
+        {
+            SetActorRelativeTransform(OriginalTransform);
+            AddActorLocalTransform(AdjacencyMatch.Transform);
+            break;
+        }
+    }
+}
+
 bool FTileAdjacencyMatch::MatchesAdjacencyArray(uint8 AdjacencyValue) const
 {
     if (bMatchOnCardinalOnly)
