@@ -13,19 +13,9 @@ ATile::ATile()
 
 bool ATile::MatchesAdjacencyArray_Implementation(uint8 AdjacencyValue)
 {
-    if (bMatchOnCardinalOnly)
+    for (const FTileAdjacencyMatch& AdjacencyMatch : AdjacencyMatches)
     {
-        AdjacencyValue &= FTileSystemFunctionLibrary::GetCardinalBits();
-    }
-
-    for (uint8 AdjacencyMatch : AdjacencyMatches)
-    {
-        if (bMatchOnCardinalOnly)
-        {
-            AdjacencyMatch &= FTileSystemFunctionLibrary::GetCardinalBits();
-        }
-
-        if (AdjacencyMatch == AdjacencyValue)
+        if (AdjacencyMatch.MatchesAdjacencyArray(AdjacencyValue))
         {
             return true;
         }
@@ -44,3 +34,13 @@ uint8 ATile::RemoveCardinalBits(uint8 Value) const
     return Value & ~FTileSystemFunctionLibrary::GetCardinalBits();
 }
 
+bool FTileAdjacencyMatch::MatchesAdjacencyArray(uint8 AdjacencyValue) const
+{
+    if (bMatchOnCardinalOnly)
+    {
+        AdjacencyValue &= FTileSystemFunctionLibrary::GetCardinalBits();
+        return (AdjacencyMatches & FTileSystemFunctionLibrary::GetCardinalBits()) == AdjacencyValue;
+    }
+
+    return AdjacencyMatches == AdjacencyValue;
+}

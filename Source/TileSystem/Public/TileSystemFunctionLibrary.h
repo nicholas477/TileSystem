@@ -8,14 +8,14 @@ class TILESYSTEM_API FTileSystemFunctionLibrary
 {
 public:
     static constexpr std::pair<int32, int32> AdjacentOffsetCoords[8] = {
-        std::pair<int32, int32>(0, 1),
-        std::pair<int32, int32>(1, 1),
-        std::pair<int32, int32>(1, 0),
-        std::pair<int32, int32>(1, -1),
-        std::pair<int32, int32>(0, -1),
-        std::pair<int32, int32>(-1, -1),
-        std::pair<int32, int32>(-1, 0),
-        std::pair<int32, int32>(-1, 1)
+        std::pair<int32, int32>(0, 1),      // 1 << 0, N
+        std::pair<int32, int32>(1, 1),      // 1 << 1, NE
+        std::pair<int32, int32>(1, 0),      // 1 << 2, E
+        std::pair<int32, int32>(1, -1),     // 1 << 3, SE
+        std::pair<int32, int32>(0, -1),     // 1 << 4, S
+        std::pair<int32, int32>(-1, -1),    // 1 << 5, SW
+        std::pair<int32, int32>(-1, 0),     // 1 << 6, W
+        std::pair<int32, int32>(-1, 1)      // 1 << 7, NW
     };
 
 	template<typename T>
