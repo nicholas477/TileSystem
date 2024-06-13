@@ -9,6 +9,7 @@
 UTileDebugDrawComponent::UTileDebugDrawComponent()
 {
 	bSelectable = false;
+	SetMobility(EComponentMobility::Static);
 }
 
 FDebugRenderSceneProxy* UTileDebugDrawComponent::CreateDebugSceneProxy()
@@ -72,7 +73,7 @@ void UTileDebugDrawComponent::DrawTiles(FDebugRenderSceneProxy* DebugProxy)
 	if (TileSystem)
 	{
 		bool bHasInitializedBounds = false;
-		for (const TPair<FIntVector, uint8> Tile : TileSystem->Tiles)
+		for (const TPair<FIntVector, uint8>& Tile : TileSystem->Tiles)
 		{
 			if ((Tile.Value & BitMask) != BitMask)
 			{
@@ -151,7 +152,7 @@ void UTileDebugDrawComponent::DrawTiles(FDebugRenderSceneProxy* DebugProxy)
 				//TileMesh.Color = Color;
 
 				//DebugProxy->Meshes.Add(TileMesh);
-				DebugProxy->Boxes.Emplace(FBox(TileLocation, TileMax), Color);
+				DebugProxy->Boxes.Emplace(FBox(TileLocation, TileMax), Color, FDebugRenderSceneProxy::EDrawType::WireMesh);
 			}
 		}
 	}
